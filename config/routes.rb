@@ -1,4 +1,11 @@
 Demo::Application.routes.draw do
+
+  controller :static_pages do
+    get "home" => :home
+
+    get "help" => :help
+  end
+
   resources :microposts
 
   resources :users
