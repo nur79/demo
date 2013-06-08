@@ -1,9 +1,9 @@
 Demo::Application.routes.draw do
 
   controller :static_pages do
-    get "home" => :home
-
-    get "help" => :help
+    get "home" => :home, as: :home
+    get "help" => :help, as: :help
+    get "about" => :about, as: :about
   end
 
   resources :microposts
