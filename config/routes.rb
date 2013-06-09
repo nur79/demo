@@ -1,10 +1,16 @@
 Demo::Application.routes.draw do
 
+  root to: 'static_pages#home'
+
   controller :static_pages do
-    get "home" => :home, as: :home
-    get "help" => :help, as: :help
-    get "about" => :about, as: :about
+    #get "home" => :home
+    get "help" => :help
+    get "about" => :about
+    get "contact" => :contact
+    get "signout" => :signout
   end
+
+  match '/signup', to: 'users#new'
 
   resources :microposts
 

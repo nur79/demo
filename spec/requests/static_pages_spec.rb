@@ -2,42 +2,42 @@ require 'spec_helper'
 
 describe "Static Pages" do
 
+  subject { page }
+
   describe "Home Page" do
 
-  	it "should have the right title" do 
-  		visit home_path 
-  		page.should have_selector('title', text: " | Home")
-  	end
+    before { visit root_path }
 
-    it "should have the content 'Sample App'" do
-      visit home_path
-      page.should have_selector("h1", text: "Sample App")
-    end
+    it { should have_selector('title', text: full_title("")) }
+    it { should_not have_selector('title', text: " | Home") }
+    it { should have_selector("h1", text: "Sample App") }
+
   end
 
   describe "Help Page" do
 
-  	it "should have the right title" do 
-  		visit help_path 
-  		page.should have_selector('title', text: " | Help")
-  	end
+    before { visit help_path }
 
-  	it "should have the content 'Help'" do 
-  		visit help_path 
-  		page.should have_content("Help")
-  	end 
+  	it { should have_selector('title', text: full_title("Help")) }
+  	it { should have_selector("h1", text: "Help") }
+
   end
 
   describe "About Page" do
 
-  	it "should have the right title" do 
-  		visit about_path 
-  		page.should have_selector('title', text: " | About Us")
-  	end
+    before { visit about_path }
 
-  	it "should have the content 'About Us'" do 
-  		visit about_path 
-  		page.should have_content("About Us")
-  	end 
+  	it { should have_selector('title', text: full_title("About Us")) }
+  	it { should have_selector("h1", text: "About Us") }
+
+  end
+
+  describe "Contact Page" do
+
+    before { visit contact_path }
+
+    it { should have_selector('title', text: full_title("Contact")) }
+    it { should have_selector("h1", text: "Contact") }
+
   end
 end
