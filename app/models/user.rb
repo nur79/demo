@@ -23,5 +23,5 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 4, maximum: 40 }
   validates :password_confirmation, presence: true
 
-  before_save { |user| user.email = user.email.downcase }
+  before_save { |user| user.email.downcase! }
 end
