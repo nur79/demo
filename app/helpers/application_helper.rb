@@ -10,4 +10,8 @@ module ApplicationHelper
 		end
 	end
 
+	def protocol
+		request.ssl? ? 'https' : 'http'
+	end
+
 end
