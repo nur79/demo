@@ -1,5 +1,15 @@
-<h1>Listing users</h1>
+<% provide(:title, 'All users') %> 
+<h1>All users</h1>
 
+<%= will_paginate %>
+
+<ul class="users"> 
+  <%= render @users %>
+</ul>
+
+<%= will_paginate %>
+
+<!--
 <table>
   <tr>
     <th>Name</th>
@@ -19,7 +29,7 @@
   </tr>
 <% end %>
 </table>
-
+-->
 <br />
 
 <%= link_to 'New User', new_user_path %>

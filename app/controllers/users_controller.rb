@@ -1,8 +1,13 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.json
+
+  before_filter :signed_in_user, only: [:index, :edit, :update, :destroy]
+  before_filter :correct_user, only: [:edit, :update]
+  before_filter :correct_admin, only: [:destroy]
+
   def index
-    @users = User.all
+    @users = User.paginate(page: params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -64,7 +69,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html do 
-          flash[:success] = 'User was successfully updated!' 
+          flash[:success] = 'Profile updated!' 
+          sign_in @user
           redirect_to @user
         end
         format.json { head :no_content }
@@ -78,11 +84,13 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
-    @user.destroy
+    @user = User.find(params[:id]).destroy
 
     respond_to do |format|
-      format.html { redirect_to users_url }
+      format.html do 
+        flash[:success] = "User destroyed!"
+        redirect_to users_path
+      end
       format.json { head :no_content }
     end
   end

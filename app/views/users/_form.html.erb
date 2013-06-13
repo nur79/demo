@@ -14,10 +14,10 @@
     <%= f.password_field :password %>
   </div>
   <div class="field">
-    <%= f.label :password_confirmation, 'Confirmation' %>
+    <%= f.label :password_confirmation, @user.new_record? ? 'Confirmation' : 'Confirm Password' %>
     <%= f.password_field :password_confirmation %>
   </div>
   <div class="actions">
-    <%= f.submit "Create my account", class: "btn btn-large btn-primary" %>
+    <%= f.submit @user.new_record? ? "Create my account" : "Save changes", class: "btn btn-large btn-primary" %>
   </div>
 <% end %>
