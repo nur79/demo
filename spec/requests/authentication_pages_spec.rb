@@ -117,6 +117,45 @@ describe "Authentication" do
 						specify { response.should redirect_to(root_path) }
 					end
 				end
+
+				describe "when attempting to visit a protected page" do
+
+					before do 
+						visit edit_user_path(user) 
+						fill_in "Email",	with: user.email 
+						fill_in "Password", with: user.password 
+						click_button "Sign in" 
+					end 
+
+					describe "after signing in" do
+
+						it "should render the desired protected page" do 
+							page.should have_selector('title', text: 'Edit user')
+							page.should have_link('Sign out')
+						end
+
+						describe "and signing out" do
+
+							before { click_link "Sign out" }
+
+							it { should have_link('Sign up now!') }
+
+							describe "when signing in again" do 
+
+								before do
+									visit signin_path 
+									fill_in "Email",	with: user.email 
+									fill_in "Password", with: user.password 
+									click_button "Sign in"
+								end
+
+								it "should render the default (profile) page" do 
+									page.should have_selector('title', text: user.name)
+								end 
+							end
+						end 
+					end
+				end
 			end
  		end 
 
