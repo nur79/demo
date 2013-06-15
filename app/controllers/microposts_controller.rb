@@ -1,6 +1,11 @@
 class MicropostsController < ApplicationController
   # GET /microposts
   # GET /microposts.json
+
+  before_filter :signed_in_user, only: [:create, :destroy]
+  before_filter :correct_user, only: [:destroy]
+
+
   def index
     @microposts = Micropost.all
 
@@ -40,14 +45,17 @@ class MicropostsController < ApplicationController
   # POST /microposts
   # POST /microposts.json
   def create
-    @micropost = Micropost.new(params[:micropost])
+    @micropost = current_user.microposts.build(params[:micropost])
 
     respond_to do |format|
       if @micropost.save
-        format.html { redirect_to @micropost, notice: 'Micropost was successfully created.' }
+        format.html do 
+          flash[:success] = 'Micropost created!'
+          redirect_to root_path
+        end
         format.json { render json: @micropost, status: :created, location: @micropost }
       else
-        format.html { render action: "new" }
+        format.html { render 'static_pages/home' }
         format.json { render json: @micropost.errors, status: :unprocessable_entity }
       end
     end
@@ -72,12 +80,24 @@ class MicropostsController < ApplicationController
   # DELETE /microposts/1
   # DELETE /microposts/1.json
   def destroy
-    @micropost = Micropost.find(params[:id])
     @micropost.destroy
 
     respond_to do |format|
-      format.html { redirect_to microposts_url }
+      format.html { redirect_to root_path }
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def correct_user 
+      @micropost = Micropost.find_by_id(params[:id])
+      redirect_to root_path unless current_user?(@micropost.user)
+    end
+
+    def correct_admin 
+      @micropost = Micropost.find_by_id(params[:id])
+      redirect_to root_path unless current_user.admin? and !current_user?(@micropost.user)
+    end
+
 end

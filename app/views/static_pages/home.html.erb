@@ -1,4 +1,24 @@
 <% provide(:title, '') %>
+
+<% if signed_in? %> 
+<div class="row">
+	<aside class="span4"> 
+		<section>
+			<%= render 'shared/user_info' %> 
+		</section> 
+		<section>
+			<%= render 'shared/micropost_form' %> 
+		</section> 
+	</aside> 
+	<% unless @feed_items.nil? %>
+	<div class="span8">
+		<h3>Micropost Feed</h3>
+		<%= render 'shared/feed' %> 
+	</div>
+	<% end %>
+</div>
+<% else %>
+
 <div class="center hero-unit"> 
 	<h1>Welcome to the Sample App</h1>
 	<h2>
@@ -8,4 +28,6 @@
 	</h2>
 	<%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %> 
 </div>
+
+<% end %>
 <%= link_to image_tag("rails.png", alt: "Rails"), protocol+'://rubyonrails.org/' %>

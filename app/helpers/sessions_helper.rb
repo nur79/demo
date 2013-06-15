@@ -32,16 +32,6 @@ module SessionsHelper
 		@current_user ||= User.find_by_remember_token(cookies[:remember_token])
 	end
 
-	def correct_user 
-		@user = User.find(params[:id]) 
-		redirect_to root_path unless current_user?(@user)
-	end
-
-	def correct_admin 
-		@user = User.find(params[:id]) 
-		redirect_to root_path unless current_user.admin? and !current_user?(@user)
-	end
-
 	def redirect_back_or(default)
 		redirect_to(session[:return_to] || default)
 		session.delete :return_to

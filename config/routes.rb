@@ -10,7 +10,7 @@ Demo::Application.routes.draw do
     get "signout" => :signout
   end
 
-  resources :microposts
+  resources :microposts, only: [:create, :destroy]
 
   resources :users
   resources :sessions, only: [:new, :create, :destroy]

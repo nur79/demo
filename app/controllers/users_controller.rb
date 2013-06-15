@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -39,7 +40,6 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
   end
 
   # POST /users
@@ -64,7 +64,6 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -84,7 +83,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id]).destroy
+    @user.destroy
 
     respond_to do |format|
       format.html do 
@@ -94,4 +93,17 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+
+    def correct_user 
+      @user = User.find(params[:id]) 
+      redirect_to root_path unless current_user?(@user)
+    end
+
+    def correct_admin 
+      @user = User.find(params[:id]) 
+      redirect_to root_path unless current_user.admin? and !current_user?(@user)
+    end
+
 end
