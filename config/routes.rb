@@ -12,7 +12,14 @@ Demo::Application.routes.draw do
 
   resources :microposts, only: [:create, :destroy]
 
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+
+  resources :relationships, only: [:create, :destroy]
+
   resources :sessions, only: [:new, :create, :destroy]
 
   match '/signup', to: 'users#new'
